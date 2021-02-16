@@ -1577,10 +1577,10 @@ version:               ${this.version}`;
 	}
 
 	/**
-	 * Refreshes all non-static values of a single CC from this node.
+	 * Refreshes all non-static values of a single CC from this node (all endpoints).
 	 * WARNING: It is not recommended to await this method!
 	 */
-	private async refreshCCValues(cc: CommandClasses): Promise<void> {
+	public async refreshCCValues(cc: CommandClasses): Promise<void> {
 		for (const endpoint of this.getAllEndpoints()) {
 			const instance = endpoint.createCCInstanceUnsafe(cc);
 			if (instance) {
@@ -1600,7 +1600,7 @@ version:               ${this.version}`;
 	}
 
 	/**
-	 * Refreshes all non-static values from this node.
+	 * Refreshes all non-static values from this node's actuator and sensor CCs.
 	 * WARNING: It is not recommended to await this method!
 	 */
 	public async refreshValues(): Promise<void> {
