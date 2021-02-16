@@ -122,7 +122,7 @@ export class FibaroVenetianBlindCC extends FibaroCC {
 		}
 	}
 
-	public async interview(complete: boolean = true): Promise<void> {
+	public async interview(): Promise<void> {
 		const node = this.getNode()!;
 
 		this.driver.controllerLog.logNode(node.id, {
