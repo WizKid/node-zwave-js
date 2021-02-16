@@ -138,7 +138,7 @@ describe("lib/node/Node", () => {
 				controlled: CommandClasses[];
 			}[] = [
 				{
-					supported: [CommandClasses["Anti-theft"]],
+					supported: [CommandClasses["Anti-Theft"]],
 					controlled: [CommandClasses.Basic],
 				},
 			];
@@ -775,17 +775,17 @@ describe("lib/node/Node", () => {
 
 		it("should return 0 if a command class is not supported", () => {
 			const node = new ZWaveNode(2, fakeDriver);
-			expect(node.getCCVersion(CommandClasses["Anti-theft"])).toBe(0);
+			expect(node.getCCVersion(CommandClasses["Anti-Theft"])).toBe(0);
 			node.destroy();
 		});
 
 		it("should return the supported version otherwise", () => {
 			const node = new ZWaveNode(2, fakeDriver);
-			node.addCC(CommandClasses["Anti-theft"], {
+			node.addCC(CommandClasses["Anti-Theft"], {
 				isSupported: true,
 				version: 5,
 			});
-			expect(node.getCCVersion(CommandClasses["Anti-theft"])).toBe(5);
+			expect(node.getCCVersion(CommandClasses["Anti-Theft"])).toBe(5);
 			node.destroy();
 		});
 	});
@@ -795,14 +795,14 @@ describe("lib/node/Node", () => {
 
 		it("should mark a CC as not supported", () => {
 			const node = new ZWaveNode(2, fakeDriver);
-			node.addCC(CommandClasses["Anti-theft"], {
+			node.addCC(CommandClasses["Anti-Theft"], {
 				isSupported: true,
 				version: 7,
 			});
-			expect(node.getCCVersion(CommandClasses["Anti-theft"])).toBe(7);
+			expect(node.getCCVersion(CommandClasses["Anti-Theft"])).toBe(7);
 
-			node.removeCC(CommandClasses["Anti-theft"]);
-			expect(node.getCCVersion(CommandClasses["Anti-theft"])).toBe(0);
+			node.removeCC(CommandClasses["Anti-Theft"]);
+			expect(node.getCCVersion(CommandClasses["Anti-Theft"])).toBe(0);
 			node.destroy();
 		});
 	});
@@ -963,12 +963,12 @@ describe("lib/node/Node", () => {
 			node.destroy();
 		});
 
-		it("nodes with a completed interview don't get their stage reset when resuming from cache", () => {
+		it("a changed interview stage is reflected in the cache", () => {
 			const node = new ZWaveNode(1, fakeDriver);
 			// @ts-ignore We need write access to the map
 			fakeDriver.controller.nodes.set(1, node);
 			node.deserialize(serializedTestNode);
-			node.interviewStage = InterviewStage.RestartFromCache;
+			node.interviewStage = InterviewStage.Complete;
 			expect(node.serialize().interviewStage).toEqual(
 				InterviewStage[InterviewStage.Complete],
 			);
