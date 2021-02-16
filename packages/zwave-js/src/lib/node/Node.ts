@@ -1012,9 +1012,6 @@ export class ZWaveNode extends Endpoint {
 		await this.setInterviewStage(InterviewStage.Complete);
 		this.readyMachine.send("INTERVIEW_DONE");
 
-		// Regularly query listening nodes for updated values
-		this.scheduleManualValueRefreshesForListeningNodes();
-
 		// Tell listeners that the interview is completed
 		// The driver will then send this node to sleep
 		this.emit("interview completed", this);
@@ -1516,11 +1513,12 @@ version:               ${this.version}`;
 	}
 
 	/**
+	 * @internal
 	 * Schedules the regular refreshes of some CC values
 	 */
-	private scheduleManualValueRefreshesForListeningNodes(): void {
+	public scheduleManualValueRefreshes(): void {
 		// Only schedule this for listening nodes. Sleeping nodes are queried on wakeup
-		if (this.supportsCC(CommandClasses["Wake Up"])) return;
+		if (!this.canSleep) return;
 		// Only schedule this if we don't expect any unsolicited updates
 		if (!this.requiresManualValueRefresh()) return;
 
